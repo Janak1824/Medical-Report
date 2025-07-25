@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ayurvedic Patient Report</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f7fafc;
+    }
+
+    .vitals-card {
+      background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+    }
+
+    .remedy-card {
+      background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 100%);
+    }
+
+    .precaution-card {
+      background: linear-gradient(135deg, #f9a8d4 0%, #f472b6 100%);
+    }
+
+    .medicine-card {
+      background: linear-gradient(135deg, #f47272 0%, #ff5a5a 100%);
+    }
+
+    .ayurveda-theme {
+      background: white;
+    }
+
+    .c1 {
+      width: 300px;
+      height: 300px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <div id="root" class="container mx-auto px-4 py-8 max-w-6xl">
+    <div class="ayurveda-theme rounded-xl shadow-lg p-6 mb-8">
+      <img src="/media/arogyahetu.jpg" class="c1" />
+      <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Arogya Hetu</h1>
+      <p class="text-center text-gray-600">Comprehensive health analysis with traditional Ayurvedic remedies & medicines
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <!-- Patient Information -->
+      <div class="bg-white rounded-xl shadow-md p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Patient Information</h2>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-gray-700 mb-1">Full Name</label>
+            <input type="text" id="patientName"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="Enter patient name">
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">Gender</label>
+            <select id="patientGender"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">Date of Birth</label>
+            <input type="date" id="patientDob"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+          </div>
+          <div>
+            <label class="block text-gray-700 mb-1">Contact Number</label>
+            <input type="tel" id="patientContact"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="+91 9876543210">
+          </div>
+        </div>
+      </div>
+
+      <!-- Vital Statistics -->
+      <div class="grid grid-cols-1 gap-4">
+        <div class="vitals-card rounded-xl shadow-md p-6 text-white">
+          <h2 class="text-xl font-semibold mb-4">Vital Statistics</h2>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block mb-1">Age</label>
+              <div class="text-3xl font-bold" id="ageDisplay">--</div>
+            </div>
+            <div>
+              <label class="block mb-1">Blood Pressure</label>
+              <div class="flex space-x-2">
+                <input type="number" id="bpSystolic" class="w-16 px-2 py-1 border rounded-lg text-gray-700"
+                  placeholder="120">
+                <span class="self-center">/</span>
+                <input type="number" id="bpDiastolic" class="w-16 px-2 py-1 border rounded-lg text-gray-700"
+                  placeholder="80">
+              </div>
+            </div>
+            <div>
+              <label class="block mb-1">Weight (kg)</label>
+              <input type="number" id="patientWeight" class="w-full px-2 py-1 border rounded-lg text-gray-700"
+                placeholder="65">
+            </div>
+            <div>
+              <label class="block mb-1">Blood Group</label>
+              <input type="name" id="patientHeight" class="w-full px-2 py-1 border rounded-lg text-gray-700"
+                placeholder="Type your blood group">
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-md p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Dosha Analysis</h2>
+          <div class="mb-4">
+            <label for="vataLevel" class="block font-medium text-gray-700 mb-1">Vata</label>
+            <input type="range" id="vataLevel" min="0" max="100" value="0" class="w-full mb-1"
+              oninput="updateDoshaBar('vata')">
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div id="vataBar" class="bg-green-500 h-3 rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="pittaLevel" class="block font-medium text-gray-700 mb-1">Pitta </label>
+            <input type="range" id="pittaLevel" min="0" max="100" value="0" class="w-full mb-1"
+              oninput="updateDoshaBar('pitta ')">
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div id="pittaBar" class="bg-green-500 h-3 rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="kaphaLevel" class="block font-medium text-gray-700 mb-1">Kapha</label>
+            <input type="range" id="kaphaLevel" min="0" max="100" value="0" class="w-full mb-1"
+              oninput="updateDoshaBar('kapha')">
+            <div class="w-full bg-gray-200 rounded-full h-3">
+              <div id="kaphaBar" class="bg-green-500 h-3 rounded-full" style="width: 0%"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Disease Search and Diagnosis -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Disease Diagnosis</h2>
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="flex-grow">
+          <label class="block text-gray-700 mb-1">Search for Ayurvedic Disease</label>
+          <div class="relative">
+            <input type="text" id="diseaseSearch"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+              placeholder="e.g. Arthritis, Diabetes, Hypertension">
+            <div id="searchResults"
+              class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg hidden"></div>
+          </div>
+        </div>
+        <button id="diagnoseBtn"
+          class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg self-end md:self-start transition-colors">
+          Analyze
+        </button>
+      </div>
+
+      <div id="selectedDisease" class="hidden">
+        <div class="border-l-4 border-green-500 pl-4 py-2 mb-4">
+          <h3 class="font-medium text-gray-800" id="diseaseName"></h3>
+          <p class="text-gray-600 text-sm" id="diseaseDescription"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Treatment Plan -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8" id="treatmentPlan" style="display: none;">
+      <div class="remedy-card rounded-xl shadow-md p-6 text-white">
+        <h2 class="text-xl font-semibold mb-4">Ayurvedic Remedies</h2>
+        <div id="remediesList" class="space-y-3">
+          <!-- Remedies will be populated here -->
+        </div>
+      </div>
+
+      <div class="precaution-card rounded-xl shadow-md p-6 text-white">
+        <h2 class="text-xl font-semibold mb-4">Lifestyle Precautions</h2>
+        <div id="precautionsList" class="space-y-3">
+          <!-- Precautions will be populated here -->
+        </div>
+      </div>
+
+
+      <div class="medicine-card rounded-xl shadow-md p-6 text-white">
+        <h2 class="text-xl font-semibold mb-4">Ayurvedic Medicines</h2>
+        <div id="medicinesList" class="space-y-3">
+          <!-- Precautions will be populated here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Final Report -->
+    <div class="bg-white rounded-xl shadow-md p-6" id="finalReport" style="display: none;">
+      <h2 class="text-xl font-semibold text-gray-800 mb-4">Complete Ayurvedic Health Report</h2>
+      <div class="border border-gray-200 rounded-lg p-4 mb-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <h3 class="font-medium text-gray-700">Patient Name:</h3>
+            <p id="reportName" class="text-gray-900"></p>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-700">Age:</h3>
+            <p id="reportAge" class="text-gray-900"></p>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-700">Dosha Imbalance:</h3>
+            <p id="reportDosha" class="text-gray-900"></p>
+          </div>
+          <div>
+            <h3 class="font-medium text-gray-700">Primary Condition:</h3>
+            <p id="reportCondition" class="text-gray-900"></p>
+          </div>
+        </div>
+      </div>
+      <button id="printReport"
+        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+        Download/Print Report
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Ayurvedic Database
+    const ayurvedaDB = {
+      diseases: {
+        "Arthritis": {
+          description: "Joint inflammation known as Sandhivata in Ayurveda, caused by Vata imbalance",
+          remedies: [
+            "Take 1 tsp of ginger powder with warm water twice daily",
+            "Apply sesame oil infused with camphor to affected joints",
+            "Consume turmeric milk before bedtime",
+            "Try Castor oil (Eranda taila) massage and consumption",
+            "Use Dashamoola herbal decoction for pain relief"
+          ],
+          precautions: [
+            "Avoid cold and dry foods",
+            "Practice gentle yoga asanas daily",
+            "Maintain warm body temperature",
+            "Include ghee and healthy fats in diet",
+            "Avoid excessive physical strain on joints"
+          ],
+          medicines: [
+            "hello"
+          ],
+          dosha: "Vata"
+        },
+        "Diabetes": {
+          description: "Madhumeha in Ayurveda, typically a Kapha disorder but can involve all doshas",
+          remedies: [
+            "Bitter gourd (Karela) juice on empty stomach",
+            "Take 1 tsp fenugreek seeds soaked in water overnight",
+            "Use Gurmar (Gymnema Sylvestre) powder with water",
+            "Neem leaves juice or powder regularly",
+            "Amla (Indian gooseberry) juice daily"
+          ],
+          precautions: [
+            "Follow regular eating and sleeping schedule",
+            "Avoid sweets and refined carbohydrates",
+            "Exercise daily - walking is highly recommended",
+            "Manage stress through meditation",
+            "Avoid dairy products and heavy foods"
+          ],
+          medicines: [
+           "hello"
+          ],
+          dosha: "Kapha/Pitta"
+        },
+        "Hypertension": {
+          description: "High blood pressure or Rakta Gata Vata in Ayurvedic terms",
+          remedies: [
+            "Garlic and honey mixture in morning",
+            "Arjuna bark powder with warm milk",
+            "Sarpagandha (Rauwolfia serpentina) under supervision",
+            "Brahmi (Gotu Kola) tea for stress relief",
+            "Ashwagandha powder with warm milk at night"
+          ],
+          precautions: [
+            "Reduce salt intake",
+            "Practice pranayama (breathing exercises) daily",
+            "Avoid processed and fried foods",
+            "Maintain regular sleep schedule",
+            "Reduce caffeine and alcohol consumption"
+          ],
+          medicines: [
+           "hello"
+          ],
+          dosha: "Pitta/Vata"
+        },
+        "Indigestion": {
+          description: "Agni Mandya or weak digestive fire in Ayurveda",
+          remedies: [
+            "Take 1 tsp ginger juice with lemon before meals",
+            "Try Triphala churna at bedtime",
+            "Chew 1 tsp fennel seeds after meals",
+            "Drink cumin-coriander-fennel (CCF) tea",
+            "Take 1/2 tsp hing (asafoetida) with warm water"
+          ],
+          precautions: [
+            "Eat meals at regular times",
+            "Avoid drinking water during meals",
+            "Don't eat when stressed or emotional",
+            "Include digestive spices in cooking",
+            "Avoid processed and fermented foods"
+          ],
+          medicines: [
+            "hello"
+          ],
+          dosha: "Vata/Kapha"
+        },
+        "Insomnia": {
+          description: "Anidra or sleep disorder due to disturbed Vata and Pitta",
+          remedies: [
+            "Drink warm milk with nutmeg before bed",
+            "Head massage with brahmi oil in evening",
+            "Jatamansi and ashwagandha powder with milk",
+            "Sitali pranayama (cooling breath) before sleep",
+            "Shirodhara with warm sesame oil (professional treatment)"
+          ],
+          precautions: [
+            "Maintain consistent bedtime routine",
+            "Avoid screens 1 hour before sleep",
+            "Keep bedroom dark and cool",
+            "Avoid stimulating foods at night",
+            "Practice yoga nidra for relaxation"
+          ],
+          medicines: [
+           "hello"
+          ],
+          dosha: "Vata/Pitta"
+        }
+      }
+    };
+
+    // Calculate age from DOB
+    document.getElementById('patientDob').addEventListener('change', function () {
+      const dob = new Date(this.value);
+      const ageInMs = Date.now() - dob.getTime();
+      const ageDate = new Date(ageInMs);
+      const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+      document.getElementById('ageDisplay').textContent = age;
+    });
+
+    // Disease search functionality
+    document.getElementById('diseaseSearch').addEventListener('input', function (e) {
+      const searchTerm = e.target.value.toLowerCase();
+      const resultsContainer = document.getElementById('searchResults');
+
+      if (searchTerm.length < 2) {
+        resultsContainer.classList.add('hidden');
+        return;
+      }
+
+      const filteredDiseases = Object.keys(ayurvedaDB.diseases).filter(disease =>
+        disease.toLowerCase().includes(searchTerm)
+      );
+
+      if (filteredDiseases.length === 0) {
+        resultsContainer.innerHTML = '<div class="p-2 text-gray-500">No matching diseases found</div>';
+        resultsContainer.classList.remove('hidden');
+        return;
+      }
+
+      resultsContainer.innerHTML = filteredDiseases.map(disease => `
+        <div class="p-2 hover:bg-gray-100 cursor-pointer disease-result" data-disease="${disease}">${disease}</div>
+      `).join('');
+
+      resultsContainer.classList.remove('hidden');
+
+      // Add click handlers to results
+      document.querySelectorAll('.disease-result').forEach(item => {
+        item.addEventListener('click', function () {
+          const diseaseName = this.getAttribute('data-disease');
+          document.getElementById('diseaseSearch').value = diseaseName;
+          resultsContainer.classList.add('hidden');
+          displayDiseaseInfo(diseaseName);
+        });
+      });
+    });
+
+    // Close search results when clicking outside
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('#diseaseSearch') && !e.target.closest('#searchResults')) {
+        document.getElementById('searchResults').classList.add('hidden');
+      }
+    });
+
+    // Display disease information
+    function displayDiseaseInfo(diseaseName) {
+      const disease = ayurvedaDB.diseases[diseaseName];
+      document.getElementById('diseaseName').textContent = diseaseName;
+      document.getElementById('diseaseDescription').textContent = disease.description;
+      document.getElementById('selectedDisease').classList.remove('hidden');
+
+      // Set dosha sliders based on disease
+      if (disease.dosha.includes('Vata')) {
+        const v = 80;
+        document.getElementById('vataLevel').value = v;
+        updateDoshaBar('vata');
+      }
+      if (disease.dosha.includes('Pitta ')) {
+        const v = 80;
+        document.getElementById('pittaLevel').value = v;
+        updateDoshaBar('pitta');
+      }
+      if (disease.dosha.includes('Kapha')) {
+        const v = 80;
+        document.getElementById('kaphaLevel').value = v;
+        updateDoshaBar('kapha');
+      }
+    }
+    // Updated Doshabar
+    function updateDoshaBar(dosha) {
+      const level = document.getElementById(`${dosha}Level`).value;
+      const bar = document.getElementById(`${dosha}Bar`);
+      bar.style.width = level + '%';
+
+      // Optional: Change color dynamically based on level
+      const color =
+        level < 40 ? 'bg-green-500' :
+          level < 70 ? 'bg-yellow-500' :
+            'bg-red-500';
+
+      bar.className = `h-3 rounded-full ${color}`;
+    }
+
+
+    // Diagnose button handler
+    document.getElementById('diagnoseBtn').addEventListener('click', function () {
+      const diseaseName = document.getElementById('diseaseSearch').value;
+      if (!diseaseName || !ayurvedaDB.diseases[diseaseName]) {
+        alert('Please select a valid Ayurvedic disease from the list');
+        return;
+      }
+
+      const disease = ayurvedaDB.diseases[diseaseName];
+
+      // Display remedies
+      const remediesList = document.getElementById('remediesList');
+      remediesList.innerHTML = disease.remedies.map(remedy => `
+        <div class="flex items-start">
+          <div class="flex-shrink-0 mt-1 mr-2">✓</div>
+          <div>${remedy}</div>
+        </div>
+      `).join('');
+
+      // Display precautions
+      const precautionsList = document.getElementById('precautionsList');
+      precautionsList.innerHTML = disease.precautions.map(precaution => `
+        <div class="flex items-start">
+          <div class="flex-shrink-0 mt-1 mr-2">✓</div>
+          <div>${precaution}</div>
+        </div>
+      `).join('');
+
+      // Display medicines in table format
+      const medicinesList = document.getElementById('medicinesList');
+
+      // Check if medicine data is in array of strings or structured
+      if (typeof disease.medicines[0] === 'string') {
+        // Attempt to split structured strings like "Name	Time	Dosage"
+        const rows = disease.medicines.map(med => {
+          const parts = med.split(/\t+/); // split by tab or multiple spaces
+          const [name = "", time = "", dosage = ""] = parts;
+          return `
+      <tr class="border-b border-white/50">
+        <td class="py-1 px-2">${name.trim()}</td>
+        <td class="py-1 px-2">${time.trim()}</td>
+        <td class="py-1 px-2">${dosage.trim()}</td>
+      </tr>
+    `;
+        }).join('');
+
+        medicinesList.innerHTML = `
+    <div class="overflow-auto">
+      <table class="min-w-full text-left text-sm">
+        <thead>
+          <tr class="border-b border-white/70 text-white font-semibold">
+            <th class="py-2 px-2">Medicine Name</th>
+            <th class="py-2 px-2">Time to Take</th>
+            <th class="py-2 px-2">Dosage</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+  `;
+      }
+
+
+      // Show treatment plan
+      document.getElementById('treatmentPlan').style.display = 'grid';
+
+      // Prepare final report
+      document.getElementById('reportName').textContent = document.getElementById('patientName').value || 'Not provided';
+      document.getElementById('reportAge').textContent = document.getElementById('ageDisplay').textContent;
+      document.getElementById('reportDosha').textContent = disease.dosha;
+      document.getElementById('reportCondition').textContent = diseaseName;
+
+      // Show final report
+      document.getElementById('finalReport').style.display = 'block';
+    });
+
+    // Print/Download report
+    document.getElementById('printReport').addEventListener('click', function () {
+      window.print();
+    });
+  </script>
+</body>
+
+</html>
