@@ -38,6 +38,18 @@
       height: 300px;
       margin: auto;
     }
+
+    @media print {
+      #savedReportsContainer {
+        display: none !important;
+      }
+    }
+
+    @media print {
+      #medicineSearchContainer {
+        display: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -54,6 +66,19 @@
       <!-- Patient Information -->
       <div class="bg-white rounded-xl shadow-md p-6">
         <h2 class="text-xl font-semibold text-gray-800 mb-4">Patient Information</h2>
+        <div id="savedReportsContainer" class="mb-4">
+          <label class="block text-gray-700 mb-1">Saved Reports</label>
+          <select id="savedReportsDropdown" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-2">
+            <option value="">-- Select a saved report --</option>
+          </select>
+          <button onclick="loadPatientData()"
+            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded mr-2">Load</button>
+          <button onclick="savePatientData()"
+            class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mr-2">Save</button>
+          <button onclick="deletePatientData()"
+            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Delete</button>
+        </div>
+
         <div class="space-y-4">
           <div>
             <label class="block text-gray-700 mb-1">Full Name</label>
@@ -194,9 +219,15 @@
         </div>
       </div>
 
-
       <div class="medicine-card rounded-xl shadow-md p-6 text-white">
         <h2 class="text-xl font-semibold mb-4">Ayurvedic Medicines</h2>
+        <div class="mb-2 ">
+          <div id="medicineSearchContainer" class="mb-2">
+            <input type="text" id="medicineSearch" oninput="filterMedicines()" placeholder="Search medicines..."
+              class="w-full px-4 py-2 border border-gray-300 rounded text-black" />
+          </div>
+        </div>
+
         <div id="medicinesList" class="space-y-3">
           <!-- Precautions will be populated here -->
         </div>
@@ -254,7 +285,9 @@
             "Avoid excessive physical strain on joints"
           ],
           medicines: [
-            "hello"
+            "Ashwagandha\tMorning\t1 capsule",
+            "Yograj Guggulu\tNight\t2 tablets",
+            "Shallaki\tEvening\t1 tablet"
           ],
           dosha: "Vata"
         },
@@ -275,7 +308,9 @@
             "Avoid dairy products and heavy foods"
           ],
           medicines: [
-           "hello"
+            "Ashwagandha\tMorning\t1 capsule",
+            "Yograj Guggulu\tNight\t2 tablets",
+            "Shallaki\tEvening\t1 tablet"
           ],
           dosha: "Kapha/Pitta"
         },
@@ -296,7 +331,9 @@
             "Reduce caffeine and alcohol consumption"
           ],
           medicines: [
-           "hello"
+            "Ashwagandha\tMorning\t1 capsule",
+            "Yograj Guggulu\tNight\t2 tablets",
+            "Shallaki\tEvening\t1 tablet"
           ],
           dosha: "Pitta/Vata"
         },
@@ -317,7 +354,9 @@
             "Avoid processed and fermented foods"
           ],
           medicines: [
-            "hello"
+            "Ashwagandha\tMorning\t1 capsule",
+            "Yograj Guggulu\tNight\t2 tablets",
+            "Shallaki\tEvening\t1 tablet"
           ],
           dosha: "Vata/Kapha"
         },
@@ -338,7 +377,9 @@
             "Practice yoga nidra for relaxation"
           ],
           medicines: [
-           "hello"
+            "Ashwagandha\tMorning\t1 capsule",
+            "Yograj Guggulu\tNight\t2 tablets",
+            "Shallaki\tEvening\t1 tablet"
           ],
           dosha: "Vata/Pitta"
         }
@@ -438,6 +479,7 @@
     }
 
 
+
     // Diagnose button handler
     document.getElementById('diagnoseBtn').addEventListener('click', function () {
       const diseaseName = document.getElementById('diseaseSearch').value;
@@ -466,41 +508,38 @@
         </div>
       `).join('');
 
+
+
       // Display medicines in table format
       const medicinesList = document.getElementById('medicinesList');
-
-      // Check if medicine data is in array of strings or structured
-      if (typeof disease.medicines[0] === 'string') {
-        // Attempt to split structured strings like "Name	Time	Dosage"
-        const rows = disease.medicines.map(med => {
-          const parts = med.split(/\t+/); // split by tab or multiple spaces
-          const [name = "", time = "", dosage = ""] = parts;
-          return `
-      <tr class="border-b border-white/50">
-        <td class="py-1 px-2">${name.trim()}</td>
-        <td class="py-1 px-2">${time.trim()}</td>
-        <td class="py-1 px-2">${dosage.trim()}</td>
-      </tr>
-    `;
-        }).join('');
-
-        medicinesList.innerHTML = `
-    <div class="overflow-auto">
-      <table class="min-w-full text-left text-sm">
-        <thead>
-          <tr class="border-b border-white/70 text-white font-semibold">
-            <th class="py-2 px-2">Medicine Name</th>
-            <th class="py-2 px-2">Time to Take</th>
-            <th class="py-2 px-2">Dosage</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows}
-        </tbody>
-      </table>
-    </div>
+      let allMedicinesRows = disease.medicines.map(med => {
+        const parts = med.split(/\t+/);
+        const [name = "", time = "", dosage = ""] = parts.map(s => s.trim());
+        return `
+    <tr class="border-b border-white/50 medicine-row">
+      <td class="py-1 px-2">${name}</td>
+      <td class="py-1 px-2">${time}</td>
+      <td class="py-1 px-2">${dosage}</td>
+    </tr>
   `;
-      }
+      }).join('');
+
+      medicinesList.innerHTML = `
+  <div class="overflow-auto">
+    <table class="min-w-full text-left text-sm">
+      <thead>
+        <tr class="border-b border-white/70 text-white font-semibold">
+          <th class="py-2 px-2">Medicine Name</th>
+          <th class="py-2 px-2">Time to Take</th>
+          <th class="py-2 px-2">Dosage</th>
+        </tr>
+      </thead>
+      <tbody id="medicinesTableBody">
+        ${allMedicinesRows}
+      </tbody>
+    </table>
+  </div>
+`;
 
 
       // Show treatment plan
@@ -520,6 +559,102 @@
     document.getElementById('printReport').addEventListener('click', function () {
       window.print();
     });
+    // Save patient data to localStorage
+    function savePatientData() {
+      const name = document.getElementById("patientName").value;
+      const gender = document.getElementById("patientGender").value;
+      const dob = document.getElementById("patientDob").value;
+      const contact = document.getElementById("patientContact").value;
+      const disease = document.getElementById("diseaseSearch").value;
+      const systolic = document.getElementById("bpSystolic").value;
+      const diastolic = document.getElementById("bpDiastolic").value;
+      const weight = document.getElementById("patientWeight").value;
+      const blood = document.getElementById("patientHeight").value;
+
+      if (!name) {
+        alert("Please enter the patient's name to save the report.");
+        return;
+      }
+
+      const patientData = { name, gender, dob, contact, systolic, diastolic, weight, blood, disease };
+      localStorage.setItem("report_" + name, JSON.stringify(patientData));
+      alert("Patient report saved!");
+      loadSavedReportsList();
+    }
+
+    // Load patient data from localStorage
+    function loadPatientData() {
+      const name = document.getElementById("savedReportsDropdown").value;
+      if (!name) {
+        alert("Please select a report.");
+        return;
+      }
+
+      const data = JSON.parse(localStorage.getItem("report_" + name));
+      if (!data) return;
+
+      document.getElementById("patientName").value = data.name;
+      document.getElementById("patientGender").value = data.gender;
+      document.getElementById("patientDob").value = data.dob;
+      document.getElementById("patientContact").value = data.contact;
+      document.getElementById("bpSystolic").value = data.systolic;
+      document.getElementById("bpDiastolic").value = data.diastolic;
+      document.getElementById("patientWeight").value = data.weight;
+      document.getElementById("patientHeight").value = data.blood;
+      document.getElementById("diseaseSearch").value = data.disease || "";
+
+      // Auto-trigger Analyze
+      document.getElementById("diagnoseBtn").click();
+
+      document.getElementById('patientDob').dispatchEvent(new Event('change')); // trigger age calculation
+    }
+    // Delete patient data from localStorage
+    function deletePatientData() {
+      const name = document.getElementById("savedReportsDropdown").value;
+      if (!name) {
+        alert("Please select a report to delete.");
+        return;
+      }
+
+      const confirmDelete = confirm(`Are you sure you want to delete the report for "${name}"?`);
+      if (!confirmDelete) return;
+
+      localStorage.removeItem("report_" + name);
+      alert("Report deleted.");
+      loadSavedReportsList(); // Refresh dropdown
+    }
+
+    // Populate dropdown on load
+    function loadSavedReportsList() {
+      const dropdown = document.getElementById("savedReportsDropdown");
+      dropdown.innerHTML = '<option value="">-- Select a saved report --</option>';
+      for (let key in localStorage) {
+        if (key.startsWith("report_")) {
+          const name = key.replace("report_", "");
+          const option = document.createElement("option");
+          option.value = name;
+          option.textContent = name;
+          dropdown.appendChild(option);
+        }
+      }
+    }
+
+    // Run when page loads
+    window.addEventListener("DOMContentLoaded", loadSavedReportsList);
+
+
+    //  Search Function for Medicine
+    function filterMedicines() {
+      const search = document.getElementById("medicineSearch").value.toLowerCase();
+      const rows = document.querySelectorAll(".medicine-row");
+
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? "" : "none";
+      });
+    }
+
+
   </script>
 </body>
 
