@@ -34,29 +34,50 @@
     }
 
     .c1 {
-      width: 300px;
-      height: 300px;
-      margin: auto;
+      width: 200px;
+      height: 200px;
+      margin-left: 100px;
     }
 
-    @media print {
-      #savedReportsContainer {
-        display: none !important;
-      }
-    }
+   @media print {
+  #savedReportsContainer,
+  #medicineSearchContainer,
+  #medicinesList,
+  .medicine-card,
+  #reportButtons,
+  #ayurvedicSection {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+}
 
-    @media print {
-      #medicineSearchContainer {
-        display: none !important;
-      }
-    }
   </style>
 </head>
 
 <body class="min-h-screen">
   <div id="root" class="container mx-auto px-4 py-8 max-w-6xl">
     <div class="ayurveda-theme rounded-xl shadow-lg p-6 mb-8">
-      <img src="media/arogyahetu.jpg" class="c1" />
+      <div class="flex items-center justify-start gap-6 border-b border-gray-300 pb-4 mb-6">
+        <!-- Larger Logo on the left -->
+        <img src="media/arogyahetu.jpg" alt="Arogya Hetu" class="c1" />
+
+        <!-- Doctor's Details Box -->
+        <div
+          class="bg-gradient-to-r from-green-50 to-white p-4 rounded-xl shadow-lg border border-green-200 w-full max-w-md">
+          <h2 class="text-lg font-bold text-black mb-2">Doctor's Information</h2>
+          <div class="space-y-1 text-sm text-gray-700">
+            <p><span class="font-semibold">👨‍⚕️ Name:</span> Dr. Mohit Sharma</p>
+            <p><span class="font-semibold">📞 Contact:</span> +91 7627052907</p>
+            <p><span class="font-semibold">📧 Email:</span> Hetuarogya@gmail.com</p>
+          </div>
+        </div>
+      </div>
+
+
       <h1 class="text-3xl font-bold text-center text-gray-800 mb-2">Arogya Hetu</h1>
       <p class="text-center text-gray-600">Comprehensive health analysis with traditional Ayurvedic remedies & medicines
       </p>
@@ -220,7 +241,9 @@
       </div>
 
       <div class="medicine-card rounded-xl shadow-md p-6 text-white">
-        <h2 class="text-xl font-semibold mb-4">Ayurvedic Medicines</h2>
+        <div class="mt-6">
+          <h2 class="text-xl font-semibold mb-4">✅ Select Medicines</h2>
+        </div>
         <div class="mb-2 ">
           <div id="medicineSearchContainer" class="mb-2">
             <input type="text" id="medicineSearch" oninput="filterMedicines()" placeholder="Search medicines..."
@@ -228,39 +251,50 @@
           </div>
         </div>
 
+
+
         <div id="medicinesList" class="space-y-3">
           <!-- Precautions will be populated here -->
         </div>
+
+      </div>
+      <div id="selectedMedicinesBox" class="mt-6">
+        <h3 class="text-lg font-bold mb-2">Ayurvedic Medicines</h3>
+        <div id="selectedMedicinesTable"></div>
       </div>
     </div>
 
     <!-- Final Report -->
     <div class="bg-white rounded-xl shadow-md p-6" id="finalReport" style="display: none;">
-      <h2 class="text-xl font-semibold text-gray-800 mb-4">Complete Ayurvedic Health Report</h2>
-      <div class="border border-gray-200 rounded-lg p-4 mb-4">
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <h3 class="font-medium text-gray-700">Patient Name:</h3>
-            <p id="reportName" class="text-gray-900"></p>
-          </div>
-          <div>
-            <h3 class="font-medium text-gray-700">Age:</h3>
-            <p id="reportAge" class="text-gray-900"></p>
-          </div>
-          <div>
-            <h3 class="font-medium text-gray-700">Dosha Imbalance:</h3>
-            <p id="reportDosha" class="text-gray-900"></p>
-          </div>
-          <div>
-            <h3 class="font-medium text-gray-700">Primary Condition:</h3>
-            <p id="reportCondition" class="text-gray-900"></p>
+      <div id="ayurvedicSection">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Complete Ayurvedic Health Report</h2>
+        <div class="border border-gray-200 rounded-lg p-4 mb-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <h3 class="font-medium text-gray-700">Patient Name:</h3>
+              <p id="reportName" class="text-gray-900"></p>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-700">Age:</h3>
+              <p id="reportAge" class="text-gray-900"></p>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-700">Dosha Imbalance:</h3>
+              <p id="reportDosha" class="text-gray-900"></p>
+            </div>
+            <div>
+              <h3 class="font-medium text-gray-700">Primary Condition:</h3>
+              <p id="reportCondition" class="text-gray-900"></p>
+            </div>
           </div>
         </div>
+        <div id="reportButtons">
+          <button id="printReport"
+            class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
+            Download/Print Report
+          </button>
+        </div>
       </div>
-      <button id="printReport"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition-colors">
-        Download/Print Report
-      </button>
     </div>
   </div>
 
@@ -285,9 +319,19 @@
             "Avoid excessive physical strain on joints"
           ],
           medicines: [
-            "Ashwagandha\tMorning\t1 capsule",
-            "Yograj Guggulu\tNight\t2 tablets",
-            "Shallaki\tEvening\t1 tablet"
+            "Mahayograj Guggulu\tAfter meals (BID)\t2 tablets",
+            "Rasnadi Guggulu\tAfter meals (BID)\t2 tablets",
+            "Simhanada Guggulu\tAfter meals (BID)\t2 tablets",
+            "Dashmoolarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Mahanarayan Taila\tExternal – Morning\tWarm massage on joints",
+            "Trayodashang Guggulu\tAfter meals (BID)\t2 tablets",
+            "Shallaki (Boswellia) Caps\tMorning & Night\t1 capsule",
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Nirgundi Taila\tExternal – Night\tApply gently to affected joints",
+            "Lakshadi Guggulu\tAfter meals (TID)\t2 tablets",
+            "Erand Pak\tBefore bed\t1 tsp with warm water/milk",
+            "Kaishor Guggulu\tAfter meals (TID)\t2 tablets",
+            "Gokshuradi Guggulu\tAfter meals (BID)\t2 tablets"
           ],
           dosha: "Vata"
         },
@@ -308,9 +352,19 @@
             "Avoid dairy products and heavy foods"
           ],
           medicines: [
-            "Ashwagandha\tMorning\t1 capsule",
-            "Yograj Guggulu\tNight\t2 tablets",
-            "Shallaki\tEvening\t1 tablet"
+            "Madhumehantak Churna\tBefore meals (BID)\t1 tsp with warm water",
+            "Nisha Amalaki\tMorning empty stomach\t1 tsp with water",
+            "Vijaysar (Wood Powder)\tMorning\tSoaked water or decoction",
+            "Chandraprabha Vati\tAfter meals (BID)\t2 tablets",
+            "Gudmar (Gymnema) Capsules\tBefore meals (BID)\t1 capsule",
+            "Karela (Bitter Gourd) Capsules\tMorning\t1 capsule",
+            "Neem Capsules\tMorning\t1 capsule",
+            "Amla Juice\tMorning empty stomach\t20 ml with water",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Ashwagandha Capsules\tNight\t1 capsule",
+            "Methidana (Fenugreek Seeds)\tMorning empty stomach\t1 tsp soaked overnight",
+            "Jamun Seed Powder\tMorning & Evening\t1 tsp with water",
+            "Dia-Bet Capsule\tAfter meals (BID)\t1 capsule"
           ],
           dosha: "Kapha/Pitta"
         },
@@ -331,9 +385,19 @@
             "Reduce caffeine and alcohol consumption"
           ],
           medicines: [
-            "Ashwagandha\tMorning\t1 capsule",
-            "Yograj Guggulu\tNight\t2 tablets",
-            "Shallaki\tEvening\t1 tablet"
+            "Sarpagandha Vati\tAfter meals (BID)\t1 tablet",
+            "Mukta Vati\tMorning & Night\t1-2 tablets",
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Arjuna Churna\tMorning empty stomach\t1 tsp with warm water",
+            "Jatamansi Churna\tNight\t1 tsp with water",
+            "Rauwolfia Capsules\tAfter meals (BID)\t1 capsule",
+            "Brahmi Capsules\tMorning\t1 capsule",
+            "Gotu Kola Capsules\tMorning\t1 capsule",
+            "Punarnava Mandur\tAfter meals (BID)\t2 tablets",
+            "Lashunadi Vati\tAfter meals (BID)\t2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Dashmoolarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Praval Pishti\tMorning\t250 mg with honey"
           ],
           dosha: "Pitta/Vata"
         },
@@ -354,9 +418,19 @@
             "Avoid processed and fermented foods"
           ],
           medicines: [
-            "Ashwagandha\tMorning\t1 capsule",
-            "Yograj Guggulu\tNight\t2 tablets",
-            "Shallaki\tEvening\t1 tablet"
+            "Hingvashtak Churna\tBefore meals (TID)\t1 tsp with warm water",
+            "Avipattikar Churna\tBefore meals (BID)\t1 tsp with warm water",
+            "Trikatu Churna\tBefore meals (BID)\t½ tsp with honey",
+            "Ajwain Powder\tAfter meals (BID)\t½ tsp with warm water",
+            "Pippalyadi Churna\tAfter meals (BID)\t1 tsp with warm water",
+            "Chitrakadi Vati\tAfter meals (BID)\t2 tablets",
+            "Jeerakarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Abhayarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Digestive Enzyme Syrup (Ayurvedic)\tAfter meals (BID)\t10–15 ml",
+            "Haritaki Churna\tBedtime\t1 tsp with warm water",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Agnitundi Vati\tBefore meals (BID)\t1 tablet",
+            "Shankha Vati\tAfter meals (BID)\t1 tablet"
           ],
           dosha: "Vata/Kapha"
         },
@@ -377,11 +451,939 @@
             "Practice yoga nidra for relaxation"
           ],
           medicines: [
-            "Ashwagandha\tMorning\t1 capsule",
-            "Yograj Guggulu\tNight\t2 tablets",
-            "Shallaki\tEvening\t1 tablet"
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Tagara (Valeriana wallichii) Capsules\tNight\t1 capsule",
+            "Brahmi Vati\tNight\t1-2 tablets",
+            "Jatamansi Churna\tBedtime\t1 tsp with water",
+            "Sarpagandha Vati\tNight\t1 tablet",
+            "Manas Mitra Vatakam\tNight\t1 tablet with warm milk",
+            "Shankhpushpi Syrup\tNight\t10 ml with water",
+            "Brahmi Churna\tNight\t1 tsp with warm water or milk",
+            "Jyotishmati Taila\tExternal – Night\tMassage on scalp",
+            "Kalyanaka Ghrita\tNight\t1 tsp with warm milk",
+            "Anand Bhairav Ras\tNight\t1 tablet",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Relaxing Herbal Tea\tEvening\t1 cup"
           ],
           dosha: "Vata/Pitta"
+        },
+        "Sciatica": {
+          description: "Pain radiating along the sciatic nerve from lower back to legs.",
+          remedies: [
+            "Hot fomentation with Nirgundi leaves",
+            "Abhyanga with Mahanarayan Taila",
+            "Panchakarma therapy (Kati Basti)",
+            "Stretching exercises",
+            "Ashwagandha intake"
+          ],
+          precautions: [
+            "Avoid cold and damp environments",
+            "Do not lift heavy weights",
+            "Avoid long sitting hours",
+            "Keep posture straight",
+            "Do not skip meals"
+          ],
+          medicines: [
+            "Mahayograj Guggulu\tAfter meals (BID)\t2 tablets",
+            "Rasnadi Guggulu\tAfter meals (BID)\t2 tablets",
+            "Dashmoolarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Simhanada Guggulu\tAfter meals (BID)\t2 tablets",
+            "Trayodashang Guggulu\tAfter meals (BID)\t2 tablets",
+            "Shallaki Capsules\tMorning & Night\t1 capsule",
+            "Ashwagandha Churna\tBedtime\t1 tsp with milk",
+            "Nirgundi Taila\tExternal – Night\tApply on affected area",
+            "Lakshadi Guggulu\tAfter meals (TID)\t2 tablets",
+            "Erand Pak\tBefore bed\t1 tsp with warm milk",
+            "Yogaraj Guggulu\tAfter meals (BID)\t2 tablets",
+            "Kaishor Guggulu\tAfter meals (TID)\t2 tablets",
+            "Bala Taila\tExternal – Morning\tGentle massage",
+            "Gokshuradi Guggulu\tAfter meals (BID)\t2 tablets"
+          ],
+          dosha: "Vata"
+        },
+        "Fever": {
+          description: "Jwara: temporary increase in body temperature due to infection or imbalance in doshas.",
+          remedies: [
+            "Drink warm water with tulsi, ginger, and black pepper",
+            "Use decoction of Guduchi (Giloy), Neem, and Tulsi",
+            "Apply cool sandalwood paste on forehead",
+            "Light khichdi with ghee during digestion weakness",
+            "Avoid cold drinks and ice creams",
+            "Proper rest and hydration"
+          ],
+          precautions: [
+            "Avoid exposure to cold and damp weather",
+            "Do not skip meals even with low appetite",
+            "Avoid heavy, spicy, fried food",
+            "Take proper rest and sleep",
+            "Avoid alcohol, smoking, and caffeine",
+            "Monitor body temperature regularly"
+          ],
+          medicines: [
+            "Sudarsana Vati\tAfter meals (TID)\t2 tablets",
+            "Mahasudarshan Churna\tAfter meals (TID)\t1 tsp with water",
+            "Giloy Satva\tMorning & Night\t250 mg with honey",
+            "Tribhuvan Kirti Ras\tMorning & Evening\t1 tablet",
+            "Sanjeevani Vati\tMorning\t1 tablet",
+            "Tulsi Churna\tMorning\t½ tsp with warm water",
+            "Amritarishta\tAfter meals (BID)\t15 ml with water",
+            "Chandraprabha Vati\tAfter meals (BID)\t2 tablets",
+            "Godanti Bhasma\tWith honey\t125 mg (under guidance)",
+            "Sitopaladi Churna\tTID\t1 tsp with honey",
+            "Yashad Bhasma\tMorning\t125 mg with honey",
+            "Dashmool Kwath\tMorning & Night\t50 ml decoction",
+            "Pathyadi Kwath\tMorning\t50 ml with warm water",
+            "Guduchi Churna\tMorning\t1 tsp with warm water"
+          ],
+          dosha: "Can be caused by any dosha; most commonly Pitta and Vata"
+        },
+        "Hair fall": {
+          description: "Khalitya: excessive hair loss due to aggravated Pitta, stress, hormonal imbalance, or poor nutrition.",
+          remedies: [
+            "Apply Bhringraj or Neelibringadi oil daily",
+            "Use herbal hair pack with Amla, Shikakai, and Hibiscus",
+            "Consume Amla juice daily in the morning",
+            "Practice stress-reducing yoga and meditation",
+            "Scalp massage with Brahmi or Coconut oil",
+            "Include iron and protein-rich foods in diet"
+          ],
+          precautions: [
+            "Avoid hot water head baths",
+            "Do not use chemical shampoos or dyes",
+            "Avoid excessive stress and sleep deprivation",
+            "Avoid fried, spicy, and oily food",
+            "Do not comb wet hair or tie it tightly",
+            "Avoid smoking and alcohol"
+          ],
+          medicines: [
+            "Bhringraj Oil\tExternal – Night\tMassage on scalp",
+            "Neelibringadi Taila\tExternal – Morning\tMassage gently",
+            "Amla Capsules\tMorning\t1 capsule",
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Brahmi Capsules\tMorning\t1 capsule",
+            "Bhringrajasava\tAfter meals (BID)\t15 ml with water",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Jatamansi Capsules\tNight\t1 capsule",
+            "Keshya Rasayana\tMorning\t1 tsp with honey",
+            "Amalaki Rasayan\tMorning\t1 tsp with warm water",
+            "Narayan Taila\tExternal\tScalp massage",
+            "Kesh King Oil\tExternal – Night\tMassage on scalp",
+            "Kumari Asava\tAfter meals (BID)\t15 ml with water",
+            "Mahabhringraj Taila\tExternal\tScalp application",
+            "Shatavari Capsules\tMorning\t1 capsule"
+          ],
+          dosha: "Primarily Pitta; may involve Vata in chronic cases"
+        },
+        "Diarrhea": {
+          description: "Atisara: frequent loose or watery stools due to aggravated Vata or Pitta dosha.",
+          remedies: [
+            "Drink pomegranate juice or buttermilk with rock salt",
+            "Use Kutajarishta for digestive regulation",
+            "Roasted fennel or cumin seeds with rock salt",
+            "Bael fruit pulp with honey",
+            "Rice water (kanji) to restore hydration",
+            "Take isabgol with curd for stool binding"
+          ],
+          precautions: [
+            "Avoid dairy, spicy, oily, and cold foods",
+            "Drink only boiled or filtered water",
+            "Avoid raw fruits and vegetables during acute phase",
+            "Take light, easily digestible meals like khichdi",
+            "Rest and avoid physical exertion",
+            "Avoid contaminated or stale food"
+          ],
+          medicines: [
+            "Kutajghan Vati\tAfter meals (TID)\t2 tablets",
+            "Kutajarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Bilwadi Churna\tAfter meals (TID)\t1 tsp with warm water",
+            "Mustakarishtam\tAfter meals (BID)\t15 ml with water",
+            "Nagarmotha Churna\tMorning\t1 tsp with honey",
+            "Dadimashtak Churna\tAfter meals (TID)\t1 tsp with warm water",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Isabgol Husk\tNight\t1 tsp with curd or water",
+            "Shankha Vati\tAfter meals (BID)\t1 tablet",
+            "Panchamrut Parpati\tAfter meals\t125 mg with honey",
+            "Jeerakarishta\tAfter meals\t15 ml with water",
+            "Grahyavati\tAfter meals (BID)\t1 tablet",
+            "Madhur Churna\tAfter meals\t1 tsp with water",
+            "Dhataki Pushpa Powder\tMorning\t1 tsp with honey",
+            "Bael Fruit Powder\tAfter meals\t1 tsp with lukewarm water"
+          ],
+          dosha: "Mainly Vata and Pitta depending on type (dry or burning loose stools)"
+        },
+        "Fissure": {
+          description: "Parikartika: a small tear in the anal lining causing pain, burning, and bleeding during bowel movements.",
+          remedies: [
+            "Warm sitz bath with Triphala decoction or salt water",
+            "Local application of Jatyadi Taila or Nirgundi oil",
+            "Internal use of Gandhak Rasayan for healing",
+            "Use of Isabgol husk to soften stool",
+            "Application of Pilex or Arshoghni ointment",
+            "Diet rich in fiber and fluids"
+          ],
+          precautions: [
+            "Avoid spicy, oily, and junk food",
+            "Do not suppress natural urges like defecation",
+            "Avoid straining during bowel movement",
+            "Drink 2–3 liters of warm water daily",
+            "Avoid constipation with regular mild laxatives",
+            "Avoid prolonged sitting, especially on hard surfaces"
+          ],
+          medicines: [
+            "Gandhak Rasayan\tAfter meals (BID)\t2 tablets",
+            "Arshoghni Vati\tAfter meals (BID)\t2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Isabgol Husk\tNight\t1 tsp with warm water/milk",
+            "Panchsakar Churna\tAt bedtime\t1 tsp with warm water",
+            "Abhayarishta\tAfter meals (BID)\t15 ml with water",
+            "Jatyadi Taila\tExternal – After bath\tApply to affected area",
+            "Nirgundi Taila\tExternal – Night\tApply on fissure site",
+            "Pilex Ointment\tExternal – After defecation\tApply gently",
+            "Haritaki Churna\tBedtime\t1 tsp with warm water",
+            "Erand Bhrishta Haritaki\tAt night\t1 tsp with warm milk",
+            "Kasisadi Taila\tExternal – Morning\tApply locally",
+            "Avipattikar Churna\tBefore meals\t1 tsp with warm water",
+            "Chandraprabha Vati\tAfter meals (BID)\t2 tablets",
+            "Nimba Churna\tMorning\t1 tsp with warm water"
+          ],
+          dosha: "Primarily Vata and Pitta (due to dryness, pain, and inflammation)"
+        },
+        "Piles": {
+          description: "Arsha: swollen or inflamed blood vessels in the rectal area causing pain, bleeding, or itching during defecation.",
+          remedies: [
+            "Sitz bath with Triphala decoction or warm saline water",
+            "Internal use of Triphala and Abhayarishta for constipation",
+            "Application of Jatyadi Taila or Pilex ointment",
+            "Consume fiber-rich foods like green leafy vegetables",
+            "Use Isabgol husk with warm water to ease bowel movement",
+            "Intake of Arshoghni Vati or Kankayan Vati for shrinkage"
+          ],
+          precautions: [
+            "Avoid straining or sitting long on toilet",
+            "Avoid spicy, oily, deep-fried foods",
+            "Drink 2–3 liters of warm water daily",
+            "Maintain a regular toilet schedule",
+            "Do not suppress natural urges",
+            "Avoid sedentary lifestyle; take daily walks"
+          ],
+          medicines: [
+            "Arshoghni Vati\tAfter meals (BID)\t2 tablets",
+            "Kankayan Vati\tAfter meals (BID)\t2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Abhayarishta\tAfter meals (BID)\t15 ml with water",
+            "Isabgol Husk\tAt night\t1 tsp with warm water",
+            "Panchsakar Churna\tAt bedtime\t1 tsp with warm water",
+            "Pilex Tablets\tAfter meals (BID)\t2 tablets",
+            "Pilex Ointment\tExternal – After defecation\tApply gently",
+            "Jatyadi Taila\tExternal – Night\tApply locally",
+            "Kasisadi Taila\tExternal – Morning\tApply to affected area",
+            "Erand Bhrishta Haritaki\tNight\t1 tsp with warm milk",
+            "Haritaki Churna\tAt night\t1 tsp with warm water",
+            "Nimba Churna\tMorning\t1 tsp with water",
+            "Chandraprabha Vati\tAfter meals (BID)\t2 tablets",
+            "Trivrit Lehyam\tAt night\t1 tsp as laxative"
+          ],
+          dosha: "Mainly Vata and Pitta; occasionally Kapha in bleeding piles"
+        },
+        "Constipation": {
+          description: "Vibandha: difficulty in passing stools or incomplete bowel evacuation due to imbalanced Vata dosha.",
+          remedies: [
+            "Drink warm water early morning with a pinch of rock salt",
+            "Take Triphala churna with warm water at bedtime",
+            "Abhyanga (oil massage) followed by warm bath",
+            "Consume soaked raisins or figs overnight",
+            "Use cow ghee in food regularly",
+            "Practice yoga asanas like Pawanmuktasana and Vajrasana"
+          ],
+          precautions: [
+            "Avoid dry, spicy, and processed foods",
+            "Do not suppress natural urge to defecate",
+            "Avoid late-night meals and irregular eating habits",
+            "Limit caffeine, cold drinks, and alcohol",
+            "Stay physically active with regular movement",
+            "Stay hydrated with warm fluids throughout the day"
+          ],
+          medicines: [
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Isabgol Husk\tNight\t1 tsp with warm water or milk",
+            "Abhayarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Panchsakar Churna\tAt bedtime\t1 tsp with warm water",
+            "Erand Bhrishta Haritaki\tNight\t1 tsp with warm milk",
+            "Avipattikar Churna\tBefore meals\t1 tsp with water",
+            "Castor Oil\tNight\t1–2 tsp with warm milk (under supervision)",
+            "Gandharvahastadi Kashayam\tBefore meals\t15 ml with warm water",
+            "Drakshasava\tAfter meals (BID)\t15 ml with equal water",
+            "Hingvashtak Churna\tBefore meals\t½ tsp with ghee",
+            "Sukumara Ghrita\tMorning empty stomach\t1 tsp with warm water",
+            "Haritaki Churna\tBedtime\t1 tsp with warm water",
+            "Trivrit Lehyam\tNight\t1 tsp as natural purgative",
+            "Dashmoolarishta\tAfter meals\t15 ml with water",
+            "Amritadi Churna\tNight\t1 tsp with lukewarm water"
+          ],
+          dosha: "Primarily Vata; can involve Pitta or Kapha depending on symptoms"
+        },
+        "Cough": {
+          description: "Kasa: reflexive expulsion of air from the lungs caused by irritation, congestion, or imbalance of doshas.",
+          remedies: [
+            "Drink warm water infused with ginger and tulsi",
+            "Take Sitopaladi Churna with honey twice daily",
+            "Use Dashamoola decoction for vata-type dry cough",
+            "Steam inhalation with eucalyptus or Ajwain seeds",
+            "Lick honey with Trikatu Churna or Yashtimadhu powder",
+            "Consume turmeric milk at bedtime"
+          ],
+          precautions: [
+            "Avoid cold drinks and refrigerated food",
+            "Do not expose to cold winds or dust",
+            "Avoid heavy, oily, and dairy-rich foods",
+            "Quit smoking or passive smoke exposure",
+            "Maintain indoor humidity during dry weather",
+            "Avoid talking loudly or overusing vocal cords"
+          ],
+          medicines: [
+            "Sitopaladi Churna\tAfter meals (BID)\t½ tsp with honey",
+            "Talisadi Churna\tAfter meals (BID)\t½ tsp with honey",
+            "Kantakari Avaleha\tAfter meals (BID)\t1 tsp",
+            "Vasarishta\tAfter meals (BID)\t15 ml with water",
+            "Bharangyadi Kashayam\tBefore meals\t15 ml with warm water",
+            "Yashtimadhu Churna\tAfter meals (BID)\t½ tsp with honey",
+            "Trikatu Churna\tAfter meals\t½ tsp with honey",
+            "Chyawanprash\tMorning\t1 tsp",
+            "Dashamoolarishta\tAfter meals\t15 ml with equal water",
+            "Lavangadi Vati\tSuck slowly\t2–3 times daily",
+            "Eladi Vati\tSuck slowly\t2–3 times daily",
+            "Tribhuvan Kirti Ras\tAfter meals\t1 tablet",
+            "Shringyadi Churna\tAfter meals\t½ tsp with honey",
+            "Tulsi Ark\tWith water\t5–10 drops",
+            "Anu Taila\tNasal instillation\t2 drops in each nostril"
+          ],
+          dosha: "Vata (dry cough), Pitta (burning sensation, yellow sputum), Kapha (wet, mucus-rich cough)"
+        },
+        "Abdomen Pain": {
+          description: "Udar Shoola: pain in the abdominal region due to indigestion, gas, inflammation, or doshic imbalance.",
+          remedies: [
+            "Warm water with hing (asafoetida) and rock salt",
+            "Ajwain + black salt chew or decoction",
+            "Castor oil with warm water for cleansing (under supervision)",
+            "Apply warm sesame oil over the abdomen",
+            "Drink cumin, fennel, and coriander seed tea",
+            "Use Dashamoola decoction to relieve vata-related pain"
+          ],
+          precautions: [
+            "Avoid spicy, oily, and heavy foods",
+            "Do not eat uncooked or stale food",
+            "Avoid cold water or beverages",
+            "Chew food properly and eat calmly",
+            "Avoid overeating and irregular meals",
+            "Practice regular bowel movement timing"
+          ],
+          medicines: [
+            "Hingvashtak Churna\tBefore meals\t½ tsp with ghee",
+            "Ajmodadi Churna\tAfter meals\t½ tsp with warm water",
+            "Avipattikar Churna\tBefore meals\t1 tsp with water",
+            "Dashamoolarishta\tAfter meals\t15 ml with equal water",
+            "Sutshekhar Ras\tAfter meals\t1 tablet",
+            "Kumaryasava\tAfter meals\t15 ml with water",
+            "Panchakol Churna\tBefore meals\t½ tsp with warm water",
+            "Shankha Vati\tAfter meals\t1 tablet",
+            "Agnitundi Vati\tBefore meals\t1 tablet",
+            "Trikatu Churna\tAfter meals\t½ tsp with honey",
+            "Chitrakadi Vati\tBefore meals\t1–2 tablets",
+            "Abhayarishta\tAfter meals\t15 ml with water",
+            "Bilwadi Churna\tAfter meals\t1 tsp with warm water",
+            "Nimbadi Guggulu\tAfter meals\t2 tablets",
+            "Erand Taila\tNight\t1 tsp with warm milk"
+          ],
+          dosha: "Primarily Vata; can involve Pitta (burning) or Kapha (heaviness)"
+        },
+        "Chest Pain": {
+          description: "Urah Shoola: discomfort or pain in the chest region caused by vata imbalance, respiratory issues, indigestion, or cardiac conditions.",
+          remedies: [
+            "Warm turmeric milk to reduce inflammation",
+            "Massage with Mahanarayan Taila on chest (if muscular)",
+            "Take Trikatu Churna with honey to clear mucus",
+            "Use Dashamoola decoction for respiratory pain",
+            "Consume garlic boiled in milk for cardiac health",
+            "Steam inhalation with eucalyptus oil for congestion"
+          ],
+          precautions: [
+            "Avoid exposure to cold air or sudden temperature changes",
+            "Do not consume cold or refrigerated foods/drinks",
+            "Avoid oily, fried, and spicy food if pain is digestive",
+            "Quit smoking or passive smoke exposure",
+            "Avoid emotional stress and excessive physical exertion",
+            "Take meals at regular intervals to avoid acidity"
+          ],
+          medicines: [
+            "Arjunarishta\tAfter meals (BID)\t15 ml with water",
+            "Dashamoolarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Hridayarnava Ras\tAfter meals\t1 tablet",
+            "Mahanarayan Taila\tExternal – Morning\tChest massage",
+            "Praval Pishti\tAfter meals\t125 mg with honey",
+            "Trikatu Churna\tAfter meals\t½ tsp with honey",
+            "Sutshekhar Ras\tAfter meals\t1 tablet",
+            "Abhrak Bhasma\tAfter meals\t125 mg with honey",
+            "Arjuna Churna\tMorning\t1 tsp with warm water",
+            "Vasarishta\tAfter meals\t15 ml with water (if cough-related)",
+            "Shankh Vati\tBefore meals\t1 tablet",
+            "Lashunadi Vati\tAfter meals\t1 tablet",
+            "Talisadi Churna\tAfter meals\t½ tsp with honey",
+            "Shringyadi Churna\tAfter meals\t½ tsp with honey",
+            "Pushkarmool Churna\tMorning\t½ tsp with warm water"
+          ],
+          dosha: "Primarily Vata (pain, dryness), Pitta (burning), or Kapha (mucus-related congestion)"
+        },
+        "Loss of Appetite": {
+          description: "Agnimandya: a condition of weakened digestive fire (Agni), leading to reduced desire to eat.",
+          remedies: [
+            "Drink ginger juice with lemon and rock salt before meals",
+            "Chew a piece of fresh ginger with salt before eating",
+            "Trikatu Churna with honey to stimulate digestion",
+            "Consume buttermilk with roasted cumin and rock salt",
+            "Use Hing (asafoetida) and ajwain decoction to remove ama",
+            "Take lemon and black pepper water early in the morning"
+          ],
+          precautions: [
+            "Avoid overeating or skipping meals",
+            "Do not consume heavy, oily, or junk food",
+            "Avoid cold and refrigerated items",
+            "Do not eat under stress or anxiety",
+            "Stay away from incompatible food combinations (viruddha ahara)",
+            "Maintain regular eating and sleeping habits"
+          ],
+          medicines: [
+            "Chitrakadi Vati\tBefore meals\t1–2 tablets",
+            "Trikatu Churna\tBefore meals\t½ tsp with honey",
+            "Hingvashtak Churna\tBefore meals\t½ tsp with ghee",
+            "Agni Tundi Vati\tBefore meals\t1 tablet",
+            "Panchakola Churna\tBefore meals\t½ tsp with warm water",
+            "Lavan Bhaskar Churna\tAfter meals\t1 tsp with warm water",
+            "Jeerakarishta\tAfter meals\t15 ml with equal water",
+            "Bhringrajasava\tAfter meals\t15 ml with water",
+            "Kumaryasava\tAfter meals\t15 ml with water",
+            "Abhayarishta\tAfter meals\t15 ml with water",
+            "Agnikumar Ras\tAfter meals\t1 tablet",
+            "Deepan Vati\tBefore meals\t1 tablet",
+            "Sutshekhar Ras\tAfter meals\t1 tablet",
+            "Ajmodadi Churna\tAfter meals\t½ tsp with warm water",
+            "Pippali Churna\tBefore meals\t½ tsp with honey"
+          ],
+          dosha: "Primarily Kapha and sometimes Vata; Pitta if associated with burning or acidity"
+        },
+        "Loss of Appetite": {
+          description: "Agnimandya: a condition of weakened digestive fire (Agni), leading to reduced desire to eat.",
+          remedies: [
+            "Drink ginger juice with lemon and rock salt before meals",
+            "Chew a piece of fresh ginger with salt before eating",
+            "Trikatu Churna with honey to stimulate digestion",
+            "Consume buttermilk with roasted cumin and rock salt",
+            "Use Hing (asafoetida) and ajwain decoction to remove ama",
+            "Take lemon and black pepper water early in the morning"
+          ],
+          precautions: [
+            "Avoid overeating or skipping meals",
+            "Do not consume heavy, oily, or junk food",
+            "Avoid cold and refrigerated items",
+            "Do not eat under stress or anxiety",
+            "Stay away from incompatible food combinations (viruddha ahara)",
+            "Maintain regular eating and sleeping habits"
+          ],
+          medicines: [
+            "Chitrakadi Vati\tBefore meals\t1–2 tablets",
+            "Trikatu Churna\tBefore meals\t½ tsp with honey",
+            "Hingvashtak Churna\tBefore meals\t½ tsp with ghee",
+            "Agni Tundi Vati\tBefore meals\t1 tablet",
+            "Panchakola Churna\tBefore meals\t½ tsp with warm water",
+            "Lavan Bhaskar Churna\tAfter meals\t1 tsp with warm water",
+            "Jeerakarishta\tAfter meals\t15 ml with equal water",
+            "Bhringrajasava\tAfter meals\t15 ml with water",
+            "Kumaryasava\tAfter meals\t15 ml with water",
+            "Abhayarishta\tAfter meals\t15 ml with water",
+            "Agnikumar Ras\tAfter meals\t1 tablet",
+            "Deepan Vati\tBefore meals\t1 tablet",
+            "Sutshekhar Ras\tAfter meals\t1 tablet",
+            "Ajmodadi Churna\tAfter meals\t½ tsp with warm water",
+            "Pippali Churna\tBefore meals\t½ tsp with honey"
+          ],
+          dosha: "Primarily Kapha and sometimes Vata; Pitta if associated with burning or acidity"
+        },
+        "Viral Itching": {
+          description: "Itching caused by viral infections like measles, chickenpox, or urticaria (Sheetapitta), often with red rashes and burning.",
+          remedies: [
+            "Apply sandalwood paste for cooling effect",
+            "Take Haridra Khanda with milk to reduce allergy",
+            "Use neem decoction for blood purification",
+            "Consume cooling herbs like Guduchi and Amalaki",
+            "Take sitopaladi churna with ghee for relief",
+            "Use aloe vera pulp on affected skin"
+          ],
+          precautions: [
+            "Avoid spicy, fried, and sour foods",
+            "Stay cool and hydrated",
+            "Do not scratch blisters or rashes",
+            "Avoid sun exposure during flare-ups",
+            "Maintain hygiene and rest",
+            "Isolate in case of contagious viral rash"
+          ],
+          medicines: [
+            "Haridra Khanda\tMorning\t1 tsp with warm milk",
+            "Sitopaladi Churna\tWith ghee\t½ tsp",
+            "Manjishtha Capsules\tMorning\t1 capsule",
+            "Guduchi Churna\tMorning\t½ tsp with warm water",
+            "Praval Pishti\tWith honey\t125 mg",
+            "Avipattikar Churna\tAt night\t1 tsp with warm water",
+            "Kamdudha Ras\tAfter meals\t1 tablet",
+            "Chandanasava\tAfter meals\t15 ml with water",
+            "Amritarishta\tAfter meals\t15 ml with water",
+            "Pittashamak Vati\tAfter meals\t1 tablet",
+            "Maharasnadi Kwath\tAfter meals\t15 ml with warm water",
+            "Khadirarishta\tAfter meals\t15 ml with water",
+            "Arogyavardhini Vati\tAfter meals\t1 tablet",
+            "Amla Juice\tMorning\t20 ml with water",
+            "Neem Capsules\tMorning\t1 capsule"
+          ],
+          dosha: "Pitta-Kapha"
+        },
+        "Bacterial Itching": {
+          description: "Skin itching and irritation due to bacterial infection, often seen in wounds (Dushta Vrana) or folliculitis.",
+          remedies: [
+            "Apply Jatyadi Taila on cleaned wound area",
+            "Wash with Triphala or Neem decoction",
+            "Use turmeric and honey paste for antiseptic effect",
+            "Take Gandhak Rasayan for purification",
+            "Apply paste of Yashtimadhu with cow ghee",
+            "Use Panchatikta Ghrita internally for detox"
+          ],
+          precautions: [
+            "Avoid scratching or tampering with infected areas",
+            "Keep wounds and skin clean and dry",
+            "Avoid oily, spicy, and fermented foods",
+            "Do not expose affected area to dust and sweat",
+            "Wear loose cotton clothes",
+            "Improve hygiene and immunity"
+          ],
+          medicines: [
+            "Panchtikta Ghrita Guggulu\tAfter meals\t2 tablets",
+            "Gandhak Rasayan\tAfter meals\t1 tablet",
+            "Kaishor Guggulu\tAfter meals\t2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Arogyavardhini Vati\tAfter meals\t1 tablet",
+            "Haridra Khanda\tMorning\t1 tsp with milk",
+            "Chandanasava\tAfter meals\t15 ml with water",
+            "Khadirarishta\tAfter meals\t15 ml with water",
+            "Manjishtha Churna\tAfter meals\t½ tsp with honey",
+            "Jatyadi Taila\tExternal\tApply on affected area",
+            "Neem Oil\tExternal\tApply gently",
+            "Yashtimadhu Churna\tExternal\tApply as paste",
+            "Triphala Decoction\tExternal\tSkin wash",
+            "Kutaj Ghanvati\tAfter meals\t1 tablet (if pus discharge)",
+            "Amritarishta\tAfter meals\t15 ml with water"
+          ],
+          dosha: "Pitta-Kapha"
+        },
+        "Joint pain": {
+          description: "Sandhivata: pain, stiffness or swelling in joints due to Vata aggravation.",
+          remedies: [
+            "Warm oil massage (Mahanarayan or Sahacharadi taila)",
+            "Swedana (warm steam) after abhyanga",
+            "Ginger‑turmeric decoction with little ghee",
+            "Gentle joint movement exercises (like yoga)",
+            "Soaking in lukewarm water with Epsom salts",
+            "Rub with Nirgundi leaves or castor oil poultice"
+          ],
+          precautions: [
+            "Avoid cold and damp weather",
+            "Do not overexert affected joints",
+            "Avoid excessive sitting or standing",
+            "Use warm clothing to keep joints warm",
+            "Avoid raw and cold food",
+            "Maintain proper posture"
+          ],
+          medicines: [
+            "Mahayograj Guggulu\tAfter meals (BID)\t2 tablets",
+            "Rasnadi Guggulu\tAfter meals (BID)\t2 tablets",
+            "Simhanada Guggulu\tAfter meals (BID)\t2 tablets",
+            "Dashmoolarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Trayodashang Guggulu\tAfter meals (BID)\t2 tablets",
+            "Shallaki (Boswellia) Caps\tMorning & Night\t1 capsule",
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Nirgundi Taila\tExternal – Night\tApply gently to affected joints",
+            "Lakshadi Guggulu\tAfter meals (TID)\t2 tablets",
+            "Erand Pak\tBefore bed\t1 tsp with warm water/milk",
+            "Kaishor Guggulu\tAfter meals (TID)\t2 tablets",
+            "Gokshuradi Guggulu\tAfter meals (BID)\t2 tablets",
+            "Balarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Ksheerabala Taila\tExternal – Daily\tMassage on joints"
+          ],
+          dosha: "Vata‑dominant"
+        },
+
+        "Liver infection": {
+          description: "Yakrit Pliha Vriddhi: inflammation or infection of the liver due to Pitta and Ama accumulation.",
+          remedies: [
+            "Decoction of neem, katuki & kutki for liver detox",
+            "Take Triphala Churna nightly to aid digestion",
+            "Fresh aloe vera juice with honey",
+            "Drink decoction of bhringraj and bhumi amla",
+            "Apply warm castor oil pack on right side abdomen",
+            "Include bitter greens and turmeric in diet"
+          ],
+          precautions: [
+            "Avoid alcohol, spicy, oily and fatty foods",
+            "Do not take excessive dairy or sweets",
+            "Avoid prolonged sun exposure and heat",
+            "Rest adequately and avoid physical overexertion",
+            "Stay hydrated with clean, warm water",
+            "Avoid medications that burden liver"
+          ],
+          medicines: [
+            "Arogyavardhini Vati\tAfter meals (BID)\t1 tablet",
+            "Bhumyamalaki Capsules\tMorning\t1 capsule",
+            "Kalmegh (Andrographis) Churna\tMorning\t½ tsp with water",
+            "Punarnava Mandur\tAfter meals (BID)\t2 tablets",
+            "Avipattikar Churna\tBefore meals\t1 tsp with warm water",
+            "Guduchi Satva\tMorning & Night\t250 mg with honey",
+            "Kutajghan Vati\tAfter meals (TID)\t2 tablets",
+            "Kutki Kwath\tMorning\t50 ml warm decoction",
+            "Mahasudarshan Churna\tAfter meals (TID)\t1 tsp",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Trikatu Churna\tBefore meals\t½ tsp with honey",
+            "Khadirarishta\tAfter meals (BID)\t15 ml with water",
+            "Neem Capsules\tMorning\t1 capsule",
+            "Haritaki Churna\tBedtime\t1 tsp with warm water"
+          ],
+          dosha: "Primarily Pitta; may involve Vata if weakness or Ama"
+        },
+
+        "Kidney stone": {
+          description: "Mutra Ashmari: formation of crystals or stones in the urinary tract, causing severe pain.",
+          remedies: [
+            "Drink large amounts of warm water and small doses of lemon juice",
+            "Take Punarnava and Varun decoction twice daily",
+            "Use Gokshuradi Guggulu to aid stone passage",
+            "Castor oil pack over flank region",
+            "Consume celery juice or barley water",
+            "Do mild walking to support stone movement"
+          ],
+          precautions: [
+            "Avoid salty, oxalate‑rich and processed foods",
+            "Do not consume hard water without boiling",
+            "Avoid excessive protein and dairy intake",
+            "Limit caffeine and sodas",
+            "Do not suppress urge to urinate",
+            "Avoid dehydration; maintain fluid intake"
+          ],
+          medicines: [
+            "Gokshuradi Guggulu\tAfter meals (BID)\t2 tablets",
+            "Varunadi Vati\tAfter meals (BID)\t2 tablets",
+            "Punarnava Mandur\tAfter meals (BID)\t2 tablets",
+            "Pashanabhedadi Kwath\tMorning & Evening\t50 ml",
+            "Chandanadi Vati\tAfter meals (BID)\t2 tablets",
+            "Sarsaparilla (Anantamul) Churna\tMorning\t½ tsp with water",
+            "Chitrakadi Vati\tBefore meals\t1‑2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Asparagus racemosus decoction\tMorning\t50 ml",
+            "Punarnavadi Kwath\tAfter meals\t50 ml",
+            "Varunadi Kashaya\tMorning\t50 ml decoction",
+            "Dhanvantharam Gulika\tAfter meals\t2 tablets",
+            "Kutki Churna\tMorning\t½ tsp",
+            "Haritaki Churna\tBedtime\t1 tsp"
+          ],
+          dosha: "Vata‑Pitta imbalance"
+        },
+        "Pancreatitis": {
+          description: "Inflammation of the pancreas causing abdominal pain, nausea, and imbalance of Agni (digestive fire).",
+          remedies: [
+            "Fast on clear warm coconut water or rice water",
+            "Gentle massage with castor oil over the abdominal area",
+            "Sipping ginger-tulsi decoction every hour",
+            "Consume cooling herbal teas like coriander-fennel",
+            "Avoid all dairy and oily foods during acute phase",
+            "Rest and maintain light diet (khichdi, buttermilk)"
+          ],
+          precautions: [
+            "Avoid fatty, fried, spicy and heavy foods",
+            "No alcohol or smoking",
+            "Avoid overeating or skipping meals",
+            "Do not consume cold or refrigerated items",
+            "Avoid strenuous exercise during flare-up",
+            "Maintain proper hydration"
+          ],
+          medicines: [
+            "Shri Swarnprashan\tAfter meals\t1–2 drops in honey",
+            "Kutki Churna\tMorning\t½ tsp with warm water",
+            "Arogyavardhini Vati\tAfter meals (BID)\t1 tablet",
+            "Pitta Balance Powder\tAfter meals\t½ tsp with ghee",
+            "Trikatu Churna\tBefore meals\t½ tsp",
+            "Amalaki Rasayana\tMorning\t1 tsp with warm water",
+            "Gandhak Rasayan\tAfter meals\t1 tablet",
+            "Haritaki Churna\tBedtime\t1 tsp with warm water",
+            "Kutajghan Vati\tAfter meals (TID)\t2 tablets",
+            "Guduchi Satva\tMorning & Night\t250 mg with honey",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Dashamoolarishta\tAfter meals\t15 ml with equal water",
+            "Panchakola Churna\tBefore meals\t½ tsp with warm water",
+            "Sitopaladi Churna\tAfter meals\t½ tsp with ghee"
+          ],
+          dosha: "Primarily Pitta aggravated; may involve Vata in pain"
+        },
+
+        "Loose motion": {
+          description: "Atisara (loose motion): frequent watery stools due to aggravated Vata or Pitta and digestive weakness.",
+          remedies: [
+            "Rice water or buttermilk with rock salt to restore hydration",
+            "Roasted cumin‑fennel decoction",
+            "Pomegranate juice with honey",
+            "Bael pulp with warm water",
+            "Trikatu or Bilwadi decoction to manage episodes",
+            "Rehydration with oral fluids every hour"
+          ],
+          precautions: [
+            "Avoid dairy, spicy, oily, and raw foods",
+            "Drink only boiled/filtered warm water",
+            "Avoid cold beverages and ice",
+            "Prevent dehydration by frequent fluids",
+            "Refrain from street or stale food",
+            "Practice frequent handwashing"
+          ],
+          medicines: [
+            "Kutajghan Vati\tAfter meals (TID)\t2 tablets",
+            "Kutajarishta\tAfter meals (BID)\t15 ml with equal water",
+            "Bilwadi Churna\tAfter meals (TID)\t1 tsp with warm water",
+            "Mustakarishtam\tAfter meals (BID)\t15 ml with water",
+            "Dadimashtak Churna\tAfter meals (TID)\t1 tsp",
+            "Jeerakarishta\tAfter meals\t15 ml with water",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Isabgol Husk\tNight\t1 tsp with water or curd",
+            "Shankha Vati\tAfter meals (BID)\t1 tablet",
+            "Panchsakar Churna\tAt bedtime\t1 tsp with warm water",
+            "Grahyavati\tAfter meals (BID)\t1 tablet",
+            "Bael Fruit Powder\tAfter meals\t1 tsp with water",
+            "Dhataki Pushpa Powder\tMorning\t1 tsp with honey",
+            "Arogyavardhini Vati\tAfter meals\t1 tablet"
+          ],
+          dosha: "Vata or Pitta dominant depending on stool type"
+        },
+
+        "Anemia": {
+          description: "Pandu Roga: low hemoglobin and iron deficiency causing fatigue, pale skin, and weakness.",
+          remedies: [
+            "Consume fresh pomegranate or beetroot juice daily",
+            "Soak almonds, raisins, and figs overnight and eat in the morning",
+            "Drink Giloy or Amalaki decoction",
+            "Include green leafy vegetables and iron-rich grains",
+            "Chyawanprash or Ashwagandha powder with warm milk",
+            "Avoid tea or coffee with meals to enhance iron absorption"
+          ],
+          precautions: [
+            "Avoid heavy, oily, and processed foods",
+            "Do not consume alcohol or smoking",
+            "Avoid cold and refrigerated food",
+            "Limit tea, coffee, and tannin-rich drinks",
+            "Rest adequately and avoid excessive physical exertion",
+            "Follow a balanced diet with protein and iron"
+          ],
+          medicines: [
+            "Lohasava\tAfter meals (BID)\t15 ml with equal water",
+            "Punarnava Mandur\tAfter meals (BID)\t2 tablets",
+            "Nag Bhasma\tAfter meals (BID)\t1 tablet",
+            "Abhrak Bhasma\tAfter meals (BID)\t125 mg with honey",
+            "Amla Churna\tMorning empty stomach\t1 tsp with warm water",
+            "Ashwagandharishta\tAfter meals (BID)\t15 ml with water",
+            "Arogyavardhini Vati\tAfter meals (BID)\t1 tablet",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Bhringraj Churna\tMorning\t1 tsp with honey",
+            "Guduchi Satva\tMorning & Night\t250 mg with honey",
+            "Vidyadhar Taila\tExternal – Night\tFoot massage",
+            "Amalaki Rasayana\tMorning\t1 tsp with warm water",
+            "Shatavari Capsules\tMorning\t1 capsule",
+            "Kumari Asava\tAfter meals (BID)\t15 ml with water"
+          ],
+          dosha: "Primarily Pitta-Kapha; may involve Vata in chronic cases"
+        },
+
+        "PCOD": {
+          description: "Polycystic Ovary Syndrome: hormonal imbalance causing ovarian cysts, irregular menstrual cycles, acne, weight gain.",
+          remedies: [
+            "Drink cinnamon‑ginger tea daily to balance hormones",
+            "Use flax seeds soaked in water first thing in morning",
+            "Practice yoga asanas like Baddha Konasana and Surya Namaskar",
+            "Include fenugreek seeds, turmeric, and almonds in diet",
+            "Reduce sugar and refined flour intake",
+            "Massaging with sesame oil + shatavari or sesame seeds"
+          ],
+          precautions: [
+            "Avoid processed foods, sugar, dairy and fried items",
+            "Reduce stress and maintain regular sleep cycle",
+            "Limit caffeine and carbonated drinks",
+            "Avoid sedentary lifestyle; exercise daily",
+            "Do not skip meals or follow crash diets",
+            "Ensure balanced macros and high fiber intake"
+          ],
+          medicines: [
+            "Shatavari Churna\tMorning\t1 tsp with warm water or milk",
+            "Ashokarishta\tAfter meals (BID)\t15 ml with water",
+            "Kankayan Vati\tAfter meals (BID)\t2 tablets",
+            "Arogyavardhini Vati\tAfter meals (BID)\t1 tablet",
+            "Gokshuradi Guggulu\tAfter meals (BID)\t2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Ashwagandha Churna\tBedtime\t1 tsp with milk",
+            "Manjishtha Churna\tMorning\t½ tsp with warm water",
+            "Punarnava Mandur\tAfter meals (BID)\t2 tablets",
+            "Neem Capsules\tMorning\t1 capsule",
+            "Kumari Asava\tAfter meals (BID)\t15 ml with water",
+            "Lodhra Guggulu\tAfter meals (BID)\t2 tablets",
+            "Dashamoolarishta\tAfter meals (BID)\t15 ml with water",
+            "Daruharidra Churna\tMorning\t½ tsp with warm water"
+          ],
+          dosha: "Kapha-Pitta dominant; may involve Vata in severe weight issues"
+        },
+        "Headache": {
+          description: "Siroroga: pain in the head region due to Vata, Pitta or Kapha imbalance.",
+          remedies: [
+            "Apply chilled sandalwood or rose paste to forehead",
+            "Nasya with Anu Taila or Shadbindu Taila",
+            "Steam inhalation with eucalyptus or menthol",
+            "Ginger‑lemon tea with rock salt",
+            "Abhyanga on scalp with herbal oil",
+            "Rest in a quiet, cool, dimly lit room"
+          ],
+          precautions: [
+            "Avoid exposure to bright sunlight or loud noise",
+            "Do not skip meals or overeat",
+            "Avoid strong smells, incense or perfumes",
+            "Limit screen time and eye strain",
+            "Stay hydrated and avoid alcohol/caffeine",
+            "Maintain regular sleep and meal routines"
+          ],
+          medicines: [
+            "Shirolepa paste (sandalwood + camphor)\tExternal\tsmooth layer",
+            "Anu Taila (nasya)\tNasal instillation\t2–3 drops each nostril",
+            "Shadbindu Taila (nasya)\tNasal instillation\t2–3 drops each nostril",
+            "Puran Poorna Vati\tAfter meals\t1–2 tablets",
+            "Brahmi Ghrita\tMorning empty stomach\t1 tsp",
+            "Jatamansi Tablets\tNight\t1 tablet",
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Chyawanprash\tMorning\t1 tsp",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Ksheerabala Taila\tExternal – Night\tScalp massage",
+            "Shankha Vati\tBefore meals\t1 tablet",
+            "Pathyadi Kwath\tBefore meals\t50 ml warm decoction",
+            "Arogyavardhini Vati\tAfter meals\t1 tablet",
+            "Sitopaladi Churna\tAfter meals\t½ tsp with honey"
+          ],
+          dosha: "Vata, Pitta, or Kapha depending on type (e.g. Vata–throbbing, Pitta–burning, Kapha–heavy)"
+        },
+
+        "Migraine": {
+          description: "Ardhavabhedaka: recurrent unilateral throbbing headache with nausea or aura due to Vata–Pitta imbalance.",
+          remedies: [
+            "Apply herbal Shirolepa (sandalwood, camphor, Jatamansi)",
+            "Perform Shirodhara with herbal decoction or oil",
+            "Nasya with Anu or Shadbindu Taila",
+            "Kavala Graha (oil pulling with Mahanarayana or Chandanadi Taila)",
+            "Calming breathing & relaxation exercises",
+            "Drink cooling herbs like aloe vera or coriander decoction"
+          ],
+          precautions: [
+            "Avoid bright lights, noise, odors or travel triggers",
+            "Do not consume spicy, sour, oily, or fermented foods",
+            "Avoid skipping meals or excessive heat exposure",
+            "Reduce caffeine and alcohol intake",
+            "Manage stress and get regular sleep",
+            "Avoid excessive mental or physical strain"
+          ],
+          medicines: [
+            "Shirolepa Mix\tExternal\tsandalwood + camphor + Jatamansi",
+            "Ksheerabala Taila\tExternal – Head\therbal oil massage",
+            "Anu Taila\tNasal instillation\t2–3 drops each nostril",
+            "Shadbindu Taila\tNasal instillation\t2–3 drops each nostril",
+            "Jatamansi Churna\tNight\t1 tsp with warm water",
+            "Brahmi Vati\tMorning & Night\t1 tablet",
+            "Ashwagandadi Churna\tBedtime\t1 tsp with milk",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Turmeric Milk\tNight\t1 cup warm",
+            "Sitopaladi Churna\tWith honey\t½ tsp",
+            "Shringyadi Churna\tAfter meals\t½ tsp",
+            "Sariva Tablets\tAfter meals\t1 tablet",
+            "Amla Rasayana\tMorning\t1 tsp with warm water",
+            "Guduchi Churna\tMorning\t½ tsp with water"
+          ],
+          dosha: "Mainly Pitta–Vata type; sometimes Kapha-influenced depending on nature of headache"  // Vata–Pitta primary per Ardhavabhedaka :contentReference[oaicite:1]{index=1}
+        },
+
+        "Back pain": {
+          description: "Kati Shoola / Pakshagata Vata: pain or stiffness in lower back due to Vata imbalance.",
+          remedies: [
+            "Warm oil massage (Mahanarayan or Bala Taila)",
+            "Kati Basti (warm oil pool on lower back)",
+            "Gentle lumbar stretching or yoga",
+            "Herbal fomentation with Nirgundi poultice",
+            "Castor oil poultice (lepa) to relieve stiffness",
+            "Stay warm and avoid cold exposure"
+          ],
+          precautions: [
+            "Avoid heavy lifting or sudden twisting",
+            "Do not sit or stand for prolonged periods",
+            "Avoid cold or damp weather",
+            "Use proper posture and supportive seating",
+            "Maintain warmth with clothing or heating",
+            "Avoid sleeping on too soft or too hard mattress"
+          ],
+          medicines: [
+            "Mahanarayan Taila\tExternal – Morning\tMassage on back",
+            "Ksheerabala Taila\tExternal – Night\tApply on lumbar region",
+            "Yogaraja Guggulu\tAfter meals (BID)\t2 tablets",
+            "Triodashang Guggulu\tAfter meals (BID)\t2 tablets",
+            "Dasamoolarishtam\tAfter meals (BID)\t15 ml with water",
+            "Simhanada Guggulu\tAfter meals (BID)\t2 tablets",
+            "Trayodashang Guggulu\tAfter meals (BID)\t2 tablets",
+            "Balarishta\tAfter meals (BID)\t15 ml with water",
+            "Ashwagandha Churna\tBedtime with milk\t1 tsp",
+            "Nirgundi Taila\tExternal – Night\tApply gently",
+            "Erand Pak\tBefore bed\t1 tsp with warm milk",
+            "Ksheerabala Taila\tExternal – Daily\tMassage",
+            "Lakshadi Guggulu\tAfter meals (TID)\t2 tablets",
+            "Gokshuradi Guggulu\tAfter meals (BID)\t2 tablets"
+          ],
+          dosha: "Primarily Vata (causing stiffness and pain)"
+        },
+
+        "High cholesterol": {
+          description: "Medoroga / Dyslipidemia: elevated lipids in blood due to Kapha‑Pitta imbalance and metabolic sluggishness.",
+          remedies: [
+            "Garlic‑ginger raw paste before meals",
+            "Drink pomegranate juice or coriander‑fenugreek tea",
+            "Walk or perform brisk exercise daily",
+            "Use Triphala decoction or warm water with lemon",
+            "Include arjuna, garlic, turmeric in diet",
+            "Follow Kapha‑Pitta pacifying routine"
+          ],
+          precautions: [
+            "Avoid heavy, oily, fried, or processed foods",
+            "Limit sweets, sugars, dairy and saturated fats",
+            "Reduce red meat and dairy intake",
+            "Avoid sedentary lifestyle; exercise regularly",
+            "Do not overeat; take light nutritious meals",
+            "Avoid cold drinks and excessive salt"
+          ],
+          medicines: [
+            "Arjunarishta\tAfter meals (BID)\t15 ml with water",
+            "Guggul Capsules\tMorning\t1 capsule",
+            "Lodhra Guggulu\tAfter meals (BID)\t2 tablets",
+            "Triphala Churna\tBedtime\t1 tsp with warm water",
+            "Amla Churna\tMorning empty stomach\t1 tsp with water",
+            "Punarnava Mandur\tAfter meals (BID)\t2 tablets",
+            "Guggul Ghanvati\tAfter meals (BID)\t1 tablet",
+            "Amalaki Rasayana\tMorning\t1 tsp with warm water",
+            "Dashamoolarishta\tAfter meals\t15 ml with water",
+            "Guggulu Ghan Vati\tAfter meals\t1 tablet",
+            "Garlic Tablets\tMorning\t1 tablet",
+            "Guduchi Churna\tMorning\t½ tsp",
+            "Pravala Pishti\tWith honey\t125 mg",
+            "Triphaladi Guggulu\tAfter meals (BID)\t2 tablets"
+          ],
+          dosha: "Kapha–Pitta dominant according to Ayurvedic texts on lipid disorders"
         }
       }
     };
@@ -516,22 +1518,26 @@
         const parts = med.split(/\t+/);
         const [name = "", time = "", dosage = ""] = parts.map(s => s.trim());
         return `
-    <tr class="border-b border-white/50 medicine-row">
-      <td class="py-1 px-2">${name}</td>
-      <td class="py-1 px-2">${time}</td>
-      <td class="py-1 px-2">${dosage}</td>
-    </tr>
-  `;
+  <tr class="medicine-row hover:bg-red-50 border-b border-gray-200 even:bg-red-100">
+    <td class="px-4 py-2 flex items-center gap-2">
+      <input type="checkbox" onchange="selectMedicine('${name}', '${time}', '${dosage}', this)" />
+      <span>${name}</span>
+    </td>
+    <td class="px-4 py-2">${time}</td>
+    <td class="px-4 py-2">${dosage}</td>
+  </tr>
+`;
+
       }).join('');
 
       medicinesList.innerHTML = `
-  <div class="overflow-auto">
-    <table class="min-w-full text-left text-sm">
-      <thead>
-        <tr class="border-b border-white/70 text-white font-semibold">
-          <th class="py-2 px-2">Medicine Name</th>
-          <th class="py-2 px-2">Time to Take</th>
-          <th class="py-2 px-2">Dosage</th>
+  <div class="overflow-x-auto rounded-lg shadow">
+    <table class="min-w-full text-sm text-left text-gray-700 bg-white border border-gray-200 rounded-lg">
+      <thead class="bg-red-500 text-white uppercase text-xs font-bold">
+        <tr>
+          <th class="px-4 py-3">Medicine Name</th>
+          <th class="px-4 py-3">Time to Take</th>
+          <th class="px-4 py-3">Dosage</th>
         </tr>
       </thead>
       <tbody id="medicinesTableBody">
@@ -652,6 +1658,48 @@
         const text = row.textContent.toLowerCase();
         row.style.display = text.includes(search) ? "" : "none";
       });
+    }
+
+    const selectedMedicineList = [];
+
+    function selectMedicine(name, time, dosage, checkbox) {
+      const key = `${name}-${time}-${dosage}`;
+
+      if (checkbox.checked) {
+        selectedMedicineList.push({ name, time, dosage, key });
+      } else {
+        const index = selectedMedicineList.findIndex(med => med.key === key);
+        if (index > -1) selectedMedicineList.splice(index, 1);
+      }
+
+      renderSelectedMedicines();
+    }
+
+    function renderSelectedMedicines() {
+      const table = `
+    <div class="overflow-x-auto rounded-lg shadow">
+      <table class="min-w-full text-sm text-left text-gray-700 bg-white border border-gray-200 rounded-lg">
+        <thead class="bg-green-600 text-white uppercase text-xs font-bold">
+          <tr>
+            <th class="px-4 py-3">Medicine Name</th>
+            <th class="px-4 py-3">Time</th>
+            <th class="px-4 py-3">Dosage</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${selectedMedicineList.map(med => `
+            <tr class="border-b border-gray-200 even:bg-green-100">
+              <td class="px-4 py-2">${med.name}</td>
+              <td class="px-4 py-2">${med.time}</td>
+              <td class="px-4 py-2">${med.dosage}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+      document.getElementById("selectedMedicinesTable").innerHTML = table;
     }
 
 
